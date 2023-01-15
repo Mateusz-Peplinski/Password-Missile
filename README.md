@@ -8,5 +8,6 @@
   Current version of the program uses a single thread as it is unfinished.
 </p>
 <p align="center">
+<img width="400" src="src/resources/graphicsResources/githubText0.png" alt="demoTextt">
   <img width="600" src="src/resources/graphicsResources/passwordMissileDemo.gif" alt="mainScreenGIF">
 </p>

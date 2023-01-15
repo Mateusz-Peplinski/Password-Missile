@@ -5,3 +5,6 @@
 <p align="center">
   Password Missile
 </p>
+<p align="center">
+  <img width="400" src="src/resources/graphicsResources/passwordMissileDemo.gif" alt="mainScreenGIF">
+</p>

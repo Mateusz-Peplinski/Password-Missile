@@ -72,7 +72,7 @@ namespace PasswordCracker
         private void _launch_Click(object sender, EventArgs e)
         {
             _hashToCrack += hashTextBox.Text;
-
+            statusBox.Visible = false;
             //progressConsole.Text = "";
 
             if (_hashToCrack != "")
@@ -109,6 +109,7 @@ namespace PasswordCracker
                 else
                 {
                     scroll();
+                    statusBox.Visible = true;
                     statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
                     progressConsole.Text += "#> ERROR Please Select An Hash Algorith" + Environment.NewLine;
 
@@ -118,6 +119,7 @@ namespace PasswordCracker
             else
             {
                 scroll();
+                statusBox.Visible = true;
                 statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
                 progressConsole.Text += "#> ERROR Hash Box Is Empty" + Environment.NewLine;
 
@@ -147,21 +149,24 @@ namespace PasswordCracker
                     if (compute(passwordFromFile).ToUpper() == _hashToCrack || compute(passwordFromFile).ToLower() == _hashToCrack)
                     {
                         scroll();
+                        statusBox.Visible = true;
                         statusBox.Image = global::PasswordCracker.Properties.Resources.successStatus;
-                        progressConsole.Text += "#> Success Password was found";
+                        progressConsole.Text += "#> Success Password was found" + Environment.NewLine;
                         passwordFoundTextBox.Text = passwordFromFile;
                         file.Close();
                         foundMatch = true;
                     }
                     else
                     {
-                        scroll();
-                        statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
-                        progressConsole.Text += "#> Error No Password Was Found";
+                        
                         foundMatch = false;
                     }
 
                 }
+                scroll();
+                statusBox.Visible = true;
+                statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
+                progressConsole.Text += "#> Error No Password Was Found" + Environment.NewLine;
                 file.Close();
 
             }
@@ -185,8 +190,9 @@ namespace PasswordCracker
                     if (computeSHA1Hash(passwordFromFile).ToUpper() == _hashToCrack || computeSHA1Hash(passwordFromFile).ToLower() == _hashToCrack)
                     {
                         scroll();
+                        statusBox.Visible = true;
                         statusBox.Image = global::PasswordCracker.Properties.Resources.successStatus;
-                        progressConsole.Text += "#> Success Password was found";
+                        progressConsole.Text += "#> Success Password was found" + Environment.NewLine ;
                         passwordFoundTextBox.Text = "";
                         passwordFoundTextBox.Text = passwordFromFile;
                         file.Close();
@@ -194,13 +200,15 @@ namespace PasswordCracker
                     }
                     else
                     {
-                        scroll();
-                        statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
-                        progressConsole.Text += "#> Error No Password Was Found";
+                        
                         foundMatch = false;
                     }
 
                 }
+                scroll();
+                statusBox.Visible = true;
+                statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
+                progressConsole.Text += "#> Error No Password Was Found" + Environment.NewLine;
                 file.Close();
 
             }
@@ -225,8 +233,9 @@ namespace PasswordCracker
                     if (computeSHA256Hash(passwordFromFile).ToUpper() == _hashToCrack || computeSHA256Hash(passwordFromFile).ToLower() == _hashToCrack)
                     {
                         scroll();
+                        statusBox.Visible = true;
                         statusBox.Image = global::PasswordCracker.Properties.Resources.successStatus;
-                        progressConsole.Text += "#> Success Password was found";
+                        progressConsole.Text += "#> Success Password was found" + Environment.NewLine;
                         passwordFoundTextBox.Text = "";
                         passwordFoundTextBox.Text = passwordFromFile;
                         file.Close();
@@ -234,13 +243,15 @@ namespace PasswordCracker
                     }
                     else
                     {
-                        scroll();
-                        statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
-                        progressConsole.Text += "#> Error No Password Was Found";
+                        
                         foundMatch = false;
                     }
 
                 }
+                scroll();
+                statusBox.Visible = true;
+                statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
+                progressConsole.Text += "#> Error No Password Was Found" + Environment.NewLine;
                 file.Close();
 
             }
@@ -264,22 +275,25 @@ namespace PasswordCracker
                     if (computeNTLMHash(passwordFromFile).ToUpper() == _hashToCrack || computeNTLMHash(passwordFromFile).ToLower() == _hashToCrack)
                     {
                         scroll();
+                        statusBox.Visible = true;
                         statusBox.Image = global::PasswordCracker.Properties.Resources.successStatus;
                         passwordFoundTextBox.Text = "";
                         passwordFoundTextBox.Text = passwordFromFile;
-                        progressConsole.Text += "#> Success Password was found";
+                        progressConsole.Text += "#> Success Password was found" + Environment.NewLine;
                         file.Close();
                         foundMatch = true;
                     }
                     else
                     {
-                        scroll();
-                        statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
-                        progressConsole.Text += "#> Error No Password Was Found";
+                        
                         foundMatch = false;
                     }
 
                 }
+                scroll();
+                statusBox.Visible = true;
+                statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
+                progressConsole.Text += "#> Error No Password Was Found" + Environment.NewLine;
                 file.Close();
 
             }
@@ -507,7 +521,7 @@ namespace PasswordCracker
             algorithComboBox.Font = mainFont;
             passwordFoundTextBox.Font = mainFont;
 
-            //statusBox.Visible = false;
+            statusBox.Visible = false;
 
             _launch.Visible = false;
             _abort.Visible = false;

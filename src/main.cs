@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Management;
 using System.Drawing.Text;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 
 // NOTES:
@@ -20,6 +21,7 @@ using System.Runtime.InteropServices;
 // 6 - UI Diabled untill load is complete
 // 7 - Make passwordFoundTextBox and statusBox Lable for easy access
 // 8 - Add Animation for loading & waiting make giff
+// 9 - Add Time where needed 
 
 
 namespace PasswordCracker
@@ -29,6 +31,9 @@ namespace PasswordCracker
         // Global Variables
         public string _importedPasswordList;
         private string _hashToCrack = null;
+        public bool _loadingStatus = false;
+        public bool _theadRunning =false;
+
         // !!! IMPORTANT !!!
         // In later version concider the password file Length so that there are not too many threads.
         private int _threadCount = 1;
@@ -38,11 +43,26 @@ namespace PasswordCracker
         private PrivateFontCollection pfc;
         private Font mainFont;
 
+        // Main Threads
+        Thread MD5_thread;
+        Thread SHA1_thread;
+        Thread SHA256_thread;
+        Thread NTLM_thread;
+
+        //Main Threads status
+        bool MD5_thread_status = false;
+        bool SHA1_thread_status = false;
+        bool SHA256_thread_status = false;
+        bool NTLM_thread_status = false;
+
         public main()
         {
             InitializeComponent();
             onLoad();
             diableUI();
+            Task checkLoadStatus = new Task(new Action(loadingLoop));
+            checkLoadStatus.Start();
+            _loadingStatus = true;
             Task initCPUCheck = new Task(new Action(CPUCheck));
             initCPUCheck.Start();
         }
@@ -84,26 +104,37 @@ namespace PasswordCracker
                     if (algorithComboBox.SelectedIndex == 0)
                     {
                         progressConsole.Text += "#> MD5 Selected..." + Environment.NewLine;
-                        crackMD5();
+                        MD5_thread = new Thread(() => crackMD5());
+                        MD5_thread.Start();
+                        MD5_thread_status = true;
+                        _loadingStatus = true;
                     }
                     //SHA1
                     if (algorithComboBox.SelectedIndex == 1)
                     {
                         progressConsole.Text += "#> SHA1 Selected..." + Environment.NewLine;
-                        crackSHA1();
+                        SHA1_thread = new Thread(() => crackSHA1());
+                        SHA1_thread.Start();
+                        SHA1_thread_status = true;
+
                     }
                     //SHA256
                     if (algorithComboBox.SelectedIndex == 2)
                     {
                         progressConsole.Text += "#> SHA256 Selected..." + Environment.NewLine;
+                        
+                        SHA256_thread = new Thread(() => crackSHA256());
+                        SHA256_thread.Start();
+                        SHA1_thread_status = true;
 
-                        crackSHA256();
                     }
                     //NTLM
                     if (algorithComboBox.SelectedIndex == 3)
                     {
                         progressConsole.Text += "#> NTLM Selected..." + Environment.NewLine;
-                        crackNTLM();
+                        NTLM_thread = new Thread(() => crackNTLM());
+                        NTLM_thread.Start();
+                        NTLM_thread_status = true;
                     }
                 }
                 else
@@ -148,12 +179,13 @@ namespace PasswordCracker
 
                     if (compute(passwordFromFile).ToUpper() == _hashToCrack || compute(passwordFromFile).ToLower() == _hashToCrack)
                     {
-                        scroll();
                         statusBox.Visible = true;
                         statusBox.Image = global::PasswordCracker.Properties.Resources.successStatus;
                         progressConsole.Text += "#> Success Password was found" + Environment.NewLine;
                         passwordFoundTextBox.Text = passwordFromFile;
+                        scroll();
                         file.Close();
+                        _loadingStatus = false;
                         foundMatch = true;
                     }
                     else
@@ -163,12 +195,16 @@ namespace PasswordCracker
                     }
 
                 }
-                scroll();
-                statusBox.Visible = true;
-                statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
-                progressConsole.Text += "#> Error No Password Was Found" + Environment.NewLine;
+                if(foundMatch == false)
+                {
+                    statusBox.Visible = true;
+                    statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
+                    progressConsole.Text += "#> Error No Password Was Found" + Environment.NewLine;
+                    scroll();
+                }
+                
                 file.Close();
-
+                _loadingStatus = false;
             }
 
         }
@@ -189,12 +225,12 @@ namespace PasswordCracker
 
                     if (computeSHA1Hash(passwordFromFile).ToUpper() == _hashToCrack || computeSHA1Hash(passwordFromFile).ToLower() == _hashToCrack)
                     {
-                        scroll();
                         statusBox.Visible = true;
                         statusBox.Image = global::PasswordCracker.Properties.Resources.successStatus;
                         progressConsole.Text += "#> Success Password was found" + Environment.NewLine ;
                         passwordFoundTextBox.Text = "";
                         passwordFoundTextBox.Text = passwordFromFile;
+                        scroll();
                         file.Close();
                         foundMatch = true;
                     }
@@ -205,10 +241,14 @@ namespace PasswordCracker
                     }
 
                 }
-                scroll();
-                statusBox.Visible = true;
-                statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
-                progressConsole.Text += "#> Error No Password Was Found" + Environment.NewLine;
+                if (foundMatch == false)
+                {
+                    statusBox.Visible = true;
+                    statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
+                    progressConsole.Text += "#> Error No Password Was Found" + Environment.NewLine;
+                    scroll();
+                }
+                
                 file.Close();
 
             }
@@ -232,12 +272,12 @@ namespace PasswordCracker
 
                     if (computeSHA256Hash(passwordFromFile).ToUpper() == _hashToCrack || computeSHA256Hash(passwordFromFile).ToLower() == _hashToCrack)
                     {
-                        scroll();
                         statusBox.Visible = true;
                         statusBox.Image = global::PasswordCracker.Properties.Resources.successStatus;
                         progressConsole.Text += "#> Success Password was found" + Environment.NewLine;
                         passwordFoundTextBox.Text = "";
                         passwordFoundTextBox.Text = passwordFromFile;
+                        scroll();
                         file.Close();
                         foundMatch = true;
                     }
@@ -248,10 +288,13 @@ namespace PasswordCracker
                     }
 
                 }
-                scroll();
-                statusBox.Visible = true;
-                statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
-                progressConsole.Text += "#> Error No Password Was Found" + Environment.NewLine;
+                if (foundMatch == false)
+                {
+                    statusBox.Visible = true;
+                    statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
+                    progressConsole.Text += "#> Error No Password Was Found" + Environment.NewLine;
+                    scroll();
+                }
                 file.Close();
 
             }
@@ -274,12 +317,13 @@ namespace PasswordCracker
 
                     if (computeNTLMHash(passwordFromFile).ToUpper() == _hashToCrack || computeNTLMHash(passwordFromFile).ToLower() == _hashToCrack)
                     {
-                        scroll();
+                        
                         statusBox.Visible = true;
                         statusBox.Image = global::PasswordCracker.Properties.Resources.successStatus;
                         passwordFoundTextBox.Text = "";
                         passwordFoundTextBox.Text = passwordFromFile;
                         progressConsole.Text += "#> Success Password was found" + Environment.NewLine;
+                        scroll();
                         file.Close();
                         foundMatch = true;
                     }
@@ -290,10 +334,15 @@ namespace PasswordCracker
                     }
 
                 }
-                scroll();
-                statusBox.Visible = true;
-                statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
-                progressConsole.Text += "#> Error No Password Was Found" + Environment.NewLine;
+                if (foundMatch == false)
+                {
+                    
+                    statusBox.Visible = true;
+                    statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
+                    progressConsole.Text += "#> Error No Password Was Found" + Environment.NewLine;
+                    scroll();
+                }
+               
                 file.Close();
 
             }
@@ -552,6 +601,8 @@ namespace PasswordCracker
             algorithComboBox.Enabled = false;
             _launch.Enabled = false;
             _abort.Enabled = false;
+            hashTextBox.Enabled = false;
+            algorithComboBox.Enabled = false;
         }
         private void enableUI()
         {
@@ -559,14 +610,30 @@ namespace PasswordCracker
             algorithComboBox.Enabled = true;
             _launch.Enabled = true;
             _abort.Enabled = true;
+            hashTextBox.Enabled = true;
+            algorithComboBox.Enabled = true;
+        }
+        private void loadingLoop()
+        {
+            while (true)
+            {
+                if (_loadingStatus == true)
+                {
+                    loadingGIF.Visible = true;
+                }
+                else
+                {
+                    loadingGIF.Visible = false;
+                }
+                Thread.Sleep(100);
+            }
         }
         #endregion
 
         // ################################################################### //
         // ##########                   System Check                 ######### //
         // ################################################################### //
-        #region 
-        //find model of CPU to adapt thread count
+        #region    
         private void CPUCheck()
         {
             CPUModel();
@@ -581,6 +648,7 @@ namespace PasswordCracker
             progressConsole.Text += $"#> Program Loaded... {Environment.NewLine}";
             loadInstructions();
             enableUI(); 
+            _loadingStatus = false;
         }
         private void loadInstructions()
         {
@@ -681,9 +749,11 @@ namespace PasswordCracker
             }
         }
         #endregion
+
         // ################################################################### //
         // ##########                   File Check                   ######### //
         // ################################################################### //
+        #region
         private void checkFileLines()
         { 
             _passwordFileLineCount = 0;
@@ -699,6 +769,27 @@ namespace PasswordCracker
             
             progressConsole.Text += $"#> File has {_passwordFileLineCount} Passwords {Environment.NewLine}";
             scroll();
+        }
+        #endregion
+
+        private void main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (_theadRunning == true && MD5_thread_status == true)
+            {
+                MD5_thread.Join();
+            }
+            if (_theadRunning == true && SHA1_thread_status == true)
+            {
+                SHA1_thread.Join();
+            }
+            if (_theadRunning == true && SHA256_thread_status == true)
+            {
+                SHA256_thread.Join();
+            }
+            if (_theadRunning == true && NTLM_thread_status == true)
+            {
+                NTLM_thread.Join();
+            }
         }
     }
 

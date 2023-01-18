@@ -41,6 +41,7 @@
             this._abortOnLoad = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.statusBox = new System.Windows.Forms.PictureBox();
+            this.loadingGIF = new System.Windows.Forms.PictureBox();
             this.algorithComboBox = new PasswordCracker.customDropDown();
             ((System.ComponentModel.ISupportInitialize)(this._launch)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._abort)).BeginInit();
@@ -48,6 +49,7 @@
             ((System.ComponentModel.ISupportInitialize)(this._abortOnLoad)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.statusBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.loadingGIF)).BeginInit();
             this.SuspendLayout();
             // 
             // locateFile
@@ -57,10 +59,10 @@
             this.locateFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.locateFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.locateFile.ForeColor = System.Drawing.Color.Chartreuse;
-            this.locateFile.Location = new System.Drawing.Point(266, 57);
-            this.locateFile.Margin = new System.Windows.Forms.Padding(2);
+            this.locateFile.Location = new System.Drawing.Point(355, 70);
+            this.locateFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.locateFile.Name = "locateFile";
-            this.locateFile.Size = new System.Drawing.Size(102, 26);
+            this.locateFile.Size = new System.Drawing.Size(136, 32);
             this.locateFile.TabIndex = 0;
             this.locateFile.Text = "Locate File";
             this.locateFile.UseVisualStyleBackColor = false;
@@ -78,10 +80,10 @@
             this.hashTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.hashTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.hashTextBox.ForeColor = System.Drawing.Color.Chartreuse;
-            this.hashTextBox.Location = new System.Drawing.Point(266, 16);
-            this.hashTextBox.Margin = new System.Windows.Forms.Padding(2);
+            this.hashTextBox.Location = new System.Drawing.Point(355, 20);
+            this.hashTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.hashTextBox.Name = "hashTextBox";
-            this.hashTextBox.Size = new System.Drawing.Size(379, 30);
+            this.hashTextBox.Size = new System.Drawing.Size(505, 30);
             this.hashTextBox.TabIndex = 4;
             // 
             // passwordFoundTextBox
@@ -91,11 +93,11 @@
             this.passwordFoundTextBox.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.passwordFoundTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.passwordFoundTextBox.ForeColor = System.Drawing.Color.Chartreuse;
-            this.passwordFoundTextBox.Location = new System.Drawing.Point(288, 276);
-            this.passwordFoundTextBox.Margin = new System.Windows.Forms.Padding(2);
+            this.passwordFoundTextBox.Location = new System.Drawing.Point(384, 340);
+            this.passwordFoundTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.passwordFoundTextBox.Name = "passwordFoundTextBox";
             this.passwordFoundTextBox.ReadOnly = true;
-            this.passwordFoundTextBox.Size = new System.Drawing.Size(228, 30);
+            this.passwordFoundTextBox.Size = new System.Drawing.Size(303, 30);
             this.passwordFoundTextBox.TabIndex = 10;
             // 
             // selectedFileTextBox
@@ -105,11 +107,11 @@
             this.selectedFileTextBox.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.selectedFileTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.selectedFileTextBox.ForeColor = System.Drawing.Color.Chartreuse;
-            this.selectedFileTextBox.Location = new System.Drawing.Point(372, 55);
-            this.selectedFileTextBox.Margin = new System.Windows.Forms.Padding(2);
+            this.selectedFileTextBox.Location = new System.Drawing.Point(496, 68);
+            this.selectedFileTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.selectedFileTextBox.Name = "selectedFileTextBox";
             this.selectedFileTextBox.ReadOnly = true;
-            this.selectedFileTextBox.Size = new System.Drawing.Size(272, 30);
+            this.selectedFileTextBox.Size = new System.Drawing.Size(362, 30);
             this.selectedFileTextBox.TabIndex = 11;
             // 
             // _launch
@@ -117,9 +119,10 @@
             this._launch.BackColor = System.Drawing.Color.Transparent;
             this._launch.Cursor = System.Windows.Forms.Cursors.Hand;
             this._launch.Image = global::PasswordCracker.Properties.Resources._launchButton;
-            this._launch.Location = new System.Drawing.Point(329, 169);
+            this._launch.Location = new System.Drawing.Point(439, 208);
+            this._launch.Margin = new System.Windows.Forms.Padding(4);
             this._launch.Name = "_launch";
-            this._launch.Size = new System.Drawing.Size(129, 46);
+            this._launch.Size = new System.Drawing.Size(172, 57);
             this._launch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this._launch.TabIndex = 13;
             this._launch.TabStop = false;
@@ -131,9 +134,10 @@
             this._abort.BackColor = System.Drawing.Color.Transparent;
             this._abort.Cursor = System.Windows.Forms.Cursors.Hand;
             this._abort.Image = global::PasswordCracker.Properties.Resources._abortButton;
-            this._abort.Location = new System.Drawing.Point(491, 169);
+            this._abort.Location = new System.Drawing.Point(655, 208);
+            this._abort.Margin = new System.Windows.Forms.Padding(4);
             this._abort.Name = "_abort";
-            this._abort.Size = new System.Drawing.Size(129, 46);
+            this._abort.Size = new System.Drawing.Size(172, 57);
             this._abort.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this._abort.TabIndex = 14;
             this._abort.TabStop = false;
@@ -146,13 +150,13 @@
             this.progressConsole.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.progressConsole.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.progressConsole.ForeColor = System.Drawing.Color.Chartreuse;
-            this.progressConsole.Location = new System.Drawing.Point(8, 349);
-            this.progressConsole.Margin = new System.Windows.Forms.Padding(2);
+            this.progressConsole.Location = new System.Drawing.Point(11, 430);
+            this.progressConsole.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.progressConsole.Multiline = true;
             this.progressConsole.Name = "progressConsole";
             this.progressConsole.ReadOnly = true;
             this.progressConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.progressConsole.Size = new System.Drawing.Size(645, 89);
+            this.progressConsole.Size = new System.Drawing.Size(860, 110);
             this.progressConsole.TabIndex = 15;
             // 
             // _launchOnLoad
@@ -160,9 +164,10 @@
             this._launchOnLoad.BackColor = System.Drawing.Color.Transparent;
             this._launchOnLoad.Cursor = System.Windows.Forms.Cursors.Hand;
             this._launchOnLoad.Image = global::PasswordCracker.Properties.Resources._launchButton;
-            this._launchOnLoad.Location = new System.Drawing.Point(335, 169);
+            this._launchOnLoad.Location = new System.Drawing.Point(447, 208);
+            this._launchOnLoad.Margin = new System.Windows.Forms.Padding(4);
             this._launchOnLoad.Name = "_launchOnLoad";
-            this._launchOnLoad.Size = new System.Drawing.Size(117, 42);
+            this._launchOnLoad.Size = new System.Drawing.Size(156, 52);
             this._launchOnLoad.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this._launchOnLoad.TabIndex = 16;
             this._launchOnLoad.TabStop = false;
@@ -173,9 +178,10 @@
             this._abortOnLoad.BackColor = System.Drawing.Color.Transparent;
             this._abortOnLoad.Cursor = System.Windows.Forms.Cursors.Hand;
             this._abortOnLoad.Image = global::PasswordCracker.Properties.Resources._abortButton;
-            this._abortOnLoad.Location = new System.Drawing.Point(499, 169);
+            this._abortOnLoad.Location = new System.Drawing.Point(665, 208);
+            this._abortOnLoad.Margin = new System.Windows.Forms.Padding(4);
             this._abortOnLoad.Name = "_abortOnLoad";
-            this._abortOnLoad.Size = new System.Drawing.Size(117, 42);
+            this._abortOnLoad.Size = new System.Drawing.Size(156, 52);
             this._abortOnLoad.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this._abortOnLoad.TabIndex = 17;
             this._abortOnLoad.TabStop = false;
@@ -184,9 +190,10 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::PasswordCracker.Properties.Resources.logoWithName;
-            this.pictureBox1.Location = new System.Drawing.Point(43, 138);
+            this.pictureBox1.Location = new System.Drawing.Point(57, 170);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(201, 113);
+            this.pictureBox1.Size = new System.Drawing.Size(268, 139);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 18;
             this.pictureBox1.TabStop = false;
@@ -195,12 +202,23 @@
             // 
             this.statusBox.BackColor = System.Drawing.Color.Transparent;
             this.statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
-            this.statusBox.Location = new System.Drawing.Point(146, 307);
+            this.statusBox.Location = new System.Drawing.Point(195, 378);
+            this.statusBox.Margin = new System.Windows.Forms.Padding(4);
             this.statusBox.Name = "statusBox";
-            this.statusBox.Size = new System.Drawing.Size(98, 24);
+            this.statusBox.Size = new System.Drawing.Size(131, 30);
             this.statusBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.statusBox.TabIndex = 19;
             this.statusBox.TabStop = false;
+            // 
+            // loadingGIF
+            // 
+            this.loadingGIF.BackColor = System.Drawing.Color.Transparent;
+            this.loadingGIF.Image = global::PasswordCracker.Properties.Resources.loadingLoop;
+            this.loadingGIF.Location = new System.Drawing.Point(574, 272);
+            this.loadingGIF.Name = "loadingGIF";
+            this.loadingGIF.Size = new System.Drawing.Size(125, 50);
+            this.loadingGIF.TabIndex = 21;
+            this.loadingGIF.TabStop = false;
             // 
             // algorithComboBox
             // 
@@ -215,18 +233,20 @@
             "SHA1",
             "SHA256",
             "NTLM"});
-            this.algorithComboBox.Location = new System.Drawing.Point(266, 95);
+            this.algorithComboBox.Location = new System.Drawing.Point(355, 117);
+            this.algorithComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.algorithComboBox.Name = "algorithComboBox";
-            this.algorithComboBox.Size = new System.Drawing.Size(121, 21);
+            this.algorithComboBox.Size = new System.Drawing.Size(160, 24);
             this.algorithComboBox.TabIndex = 20;
             // 
             // main
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::PasswordCracker.Properties.Resources.main;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(662, 449);
+            this.ClientSize = new System.Drawing.Size(883, 553);
+            this.Controls.Add(this.loadingGIF);
             this.Controls.Add(this.algorithComboBox);
             this.Controls.Add(this.statusBox);
             this.Controls.Add(this.pictureBox1);
@@ -240,16 +260,18 @@
             this.Controls.Add(this._launchOnLoad);
             this.Controls.Add(this._abortOnLoad);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "main";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Password Missile";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.main_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this._launch)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._abort)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._launchOnLoad)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._abortOnLoad)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.statusBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.loadingGIF)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -270,6 +292,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox statusBox;
         private customDropDown algorithComboBox;
+        private System.Windows.Forms.PictureBox loadingGIF;
     }
 }
 

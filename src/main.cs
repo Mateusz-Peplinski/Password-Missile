@@ -22,48 +22,60 @@ using System.Threading;
 // 7 - Make passwordFoundTextBox and statusBox Lable for easy access
 // 8 - Add Animation for loading & waiting make giff
 // 9 - Add Time where needed 
+// 10 - Add Password Generation Feature
 
 
 namespace PasswordCracker
 {
     public partial class main : Form
     {
+        // ################################################################### //
+        // ##########            Global Variable Region              ######### //
+        // ################################################################### //
+        #region
         // Global Variables
-        public string _importedPasswordList;
-        private string _hashToCrack = null;
-        public bool _loadingStatus = false;
-        public bool _theadRunning =false;
+        public string _IMPORTED_PASSWORDLIST;
+        private string _HASH_TO_CRACK = null;
+        public bool _LOADING_STATUS = false;
+        public bool _THREAD_RUNNING_STATUS =false;
 
         // !!! IMPORTANT !!!
         // In later version concider the password file Length so that there are not too many threads.
-        private int _threadCount = 1;
-        public int _passwordFileLineCount;
+        private int _THREAD_COUNT = 1;
+        public int _PASSWORD_FILE_LINE_COUNT;
 
         // Font Objects
-        private PrivateFontCollection pfc;
-        private Font mainFont;
+        private PrivateFontCollection _PRIV_FONT_MEMORY;
+        private Font _MAIN_UI_FONT;
 
         // Main Threads
-        Thread MD5_thread;
-        Thread SHA1_thread;
-        Thread SHA256_thread;
-        Thread NTLM_thread;
+        Thread _MD5_THREAD_MAIN;
+        Thread _SHA1_THREAD_MAIN;
+        Thread _SHA256_THREAD_MAIN;
+        Thread _NTLM_THREAD_MAIN;
 
         //Main Threads status
-        bool MD5_thread_status = false;
-        bool SHA1_thread_status = false;
-        bool SHA256_thread_status = false;
-        bool NTLM_thread_status = false;
+        bool _MD5_MAIN_THREAD_STATUS = false;
+        bool _SHA1_MAIN_THREAD_STATUS = false;
+        bool _SHA256_MAIN_THREAD_STATUS = false;
+        bool _NTLM_MAIN_THREAD_STATUS = false;
+        #endregion
 
+        /// <summary>
+        /// Main Entry Point of form
+        /// </summary>
         public main()
         {
             InitializeComponent();
             onLoad();
             diableUI();
-            Task checkLoadStatus = new Task(new Action(loadingLoop));
+
+            Task checkLoadStatus = new Task(new Action(loadingLoop)); // Thread that will run until formClose() (It will check the _LOADING_STATUS and run or stop loading animation)
             checkLoadStatus.Start();
-            _loadingStatus = true;
-            Task initCPUCheck = new Task(new Action(CPUCheck));
+
+            _LOADING_STATUS = true; // Begin load animation 
+
+            Task initCPUCheck = new Task(new Action(CPUCheck)); // Thread to check the CPU and work out core count to work out how much threads to use (password list lenght will also affect thread count)
             initCPUCheck.Start();
         }
 
@@ -71,6 +83,10 @@ namespace PasswordCracker
         // ##########             Windows Event Region               ######### //
         // ################################################################### //
         #region
+
+        /// <summary>
+        /// The event will run when the loacte password file button is pressed and will write selected file name
+        /// </summary>
         private void locateFile_Click(object sender, EventArgs e)
         {
             string passwordListFileName = "";
@@ -79,7 +95,7 @@ namespace PasswordCracker
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 passwordListFileName = Path.GetFileName(openFileDialog1.FileName);
-                _importedPasswordList = openFileDialog1.FileName;
+                _IMPORTED_PASSWORDLIST = openFileDialog1.FileName;
 
             }
             selectedFileTextBox.Text = "";
@@ -89,52 +105,59 @@ namespace PasswordCracker
 
 
         }
+
+        /// <summary>
+        /// This event will trigger the whole password cracking process
+        /// It will trigger the main parent thread for the selected algorithm 
+        /// </summary>
         private void _launch_Click(object sender, EventArgs e)
         {
-            _hashToCrack += hashTextBox.Text;
+            _HASH_TO_CRACK += hashTextBox.Text;
             statusBox.Visible = false;
             //progressConsole.Text = "";
 
-            if (_hashToCrack != "")
+            if (_HASH_TO_CRACK != "") // Check if user has entered a hash value 
             {
-                if (algorithComboBox.SelectedIndex != -1)
+                if (algorithComboBox.SelectedIndex != -1) // Check if the user has selcted an algorithm
                 {
                     scroll();
                     //MD5
                     if (algorithComboBox.SelectedIndex == 0)
                     {
                         progressConsole.Text += "#> MD5 Selected..." + Environment.NewLine;
-                        MD5_thread = new Thread(() => crackMD5());
-                        MD5_thread.Start();
-                        MD5_thread_status = true;
-                        _loadingStatus = true;
+                        _MD5_THREAD_MAIN = new Thread(() => crackMD5());
+                        _MD5_THREAD_MAIN.Start();
+                        _MD5_MAIN_THREAD_STATUS = true;
+                        _LOADING_STATUS = true;
                     }
                     //SHA1
                     if (algorithComboBox.SelectedIndex == 1)
                     {
                         progressConsole.Text += "#> SHA1 Selected..." + Environment.NewLine;
-                        SHA1_thread = new Thread(() => crackSHA1());
-                        SHA1_thread.Start();
-                        SHA1_thread_status = true;
-
+                        _SHA1_THREAD_MAIN = new Thread(() => crackSHA1());
+                        _SHA1_THREAD_MAIN.Start();
+                        _SHA1_MAIN_THREAD_STATUS = true;
+                        _LOADING_STATUS = true;
                     }
                     //SHA256
                     if (algorithComboBox.SelectedIndex == 2)
                     {
                         progressConsole.Text += "#> SHA256 Selected..." + Environment.NewLine;
                         
-                        SHA256_thread = new Thread(() => crackSHA256());
-                        SHA256_thread.Start();
-                        SHA1_thread_status = true;
+                        _SHA256_THREAD_MAIN = new Thread(() => crackSHA256());
+                        _SHA256_THREAD_MAIN.Start();
+                        _LOADING_STATUS = true;
+                        _SHA1_MAIN_THREAD_STATUS = true;
 
                     }
                     //NTLM
                     if (algorithComboBox.SelectedIndex == 3)
                     {
                         progressConsole.Text += "#> NTLM Selected..." + Environment.NewLine;
-                        NTLM_thread = new Thread(() => crackNTLM());
-                        NTLM_thread.Start();
-                        NTLM_thread_status = true;
+                        _NTLM_THREAD_MAIN = new Thread(() => crackNTLM());
+                        _NTLM_THREAD_MAIN.Start();
+                        _NTLM_MAIN_THREAD_STATUS = true;
+                        _LOADING_STATUS = true;
                     }
                 }
                 else
@@ -166,8 +189,11 @@ namespace PasswordCracker
         {
             string passwordFromFile = "";
             bool foundMatch = false;
+            Thread thisThread = Thread.CurrentThread;
+
             progressConsole.Text += "#> Beginning Password File Ingest." + Environment.NewLine;
-            using (FileStream fs = File.Open(_importedPasswordList, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+
+            using (FileStream fs = File.Open(_IMPORTED_PASSWORDLIST, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (BufferedStream bs = new BufferedStream(fs))
             using (StreamReader file = new StreamReader(bs))
             {
@@ -177,7 +203,7 @@ namespace PasswordCracker
                 while (foundMatch == false && (passwordFromFile = file.ReadLine()) != null)
                 {
 
-                    if (compute(passwordFromFile).ToUpper() == _hashToCrack || compute(passwordFromFile).ToLower() == _hashToCrack)
+                    if (compute(passwordFromFile).ToUpper() == _HASH_TO_CRACK || compute(passwordFromFile).ToLower() == _HASH_TO_CRACK)
                     {
                         statusBox.Visible = true;
                         statusBox.Image = global::PasswordCracker.Properties.Resources.successStatus;
@@ -185,8 +211,10 @@ namespace PasswordCracker
                         passwordFoundTextBox.Text = passwordFromFile;
                         scroll();
                         file.Close();
-                        _loadingStatus = false;
+                        _LOADING_STATUS = false;
                         foundMatch = true;
+                        
+                        thisThread.Join();
                     }
                     else
                     {
@@ -204,7 +232,8 @@ namespace PasswordCracker
                 }
                 
                 file.Close();
-                _loadingStatus = false;
+                thisThread.Join();
+                _LOADING_STATUS = false;
             }
 
         }
@@ -212,18 +241,23 @@ namespace PasswordCracker
         {
             string passwordFromFile = "";
             bool foundMatch = false;
+            Thread thisThread = Thread.CurrentThread;
+
             progressConsole.Text += "#> Beginning Password File Ingest." + Environment.NewLine;
-            using (FileStream fs = File.Open(_importedPasswordList, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+
+            using (FileStream fs = File.Open(_IMPORTED_PASSWORDLIST, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (BufferedStream bs = new BufferedStream(fs))
             using (StreamReader file = new StreamReader(bs))
             {
                 progressConsole.Text += "#> Finished Password File Ingest." + Environment.NewLine;
                 progressConsole.Text += "#> Beginning Brute Force Attack" + Environment.NewLine;
+
                 scroll();
+
                 while (foundMatch == false && (passwordFromFile = file.ReadLine()) != null)
                 {
 
-                    if (computeSHA1Hash(passwordFromFile).ToUpper() == _hashToCrack || computeSHA1Hash(passwordFromFile).ToLower() == _hashToCrack)
+                    if (computeSHA1Hash(passwordFromFile).ToUpper() == _HASH_TO_CRACK || computeSHA1Hash(passwordFromFile).ToLower() == _HASH_TO_CRACK)
                     {
                         statusBox.Visible = true;
                         statusBox.Image = global::PasswordCracker.Properties.Resources.successStatus;
@@ -232,7 +266,9 @@ namespace PasswordCracker
                         passwordFoundTextBox.Text = passwordFromFile;
                         scroll();
                         file.Close();
-                        foundMatch = true;
+                        _LOADING_STATUS = false;
+                        foundMatch = true;                  
+                        thisThread.Join();
                     }
                     else
                     {
@@ -250,7 +286,8 @@ namespace PasswordCracker
                 }
                 
                 file.Close();
-
+                thisThread.Join();
+                _LOADING_STATUS = false;
             }
 
         }
@@ -258,8 +295,11 @@ namespace PasswordCracker
         {
             string passwordFromFile = "";
             bool foundMatch = false;
+            Thread thisThread = Thread.CurrentThread;
+
             progressConsole.Text += "#> Beginning Password File Ingest." + Environment.NewLine;
-            using (FileStream fs = File.Open(_importedPasswordList, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+
+            using (FileStream fs = File.Open(_IMPORTED_PASSWORDLIST, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (BufferedStream bs = new BufferedStream(fs))
             using (StreamReader file = new StreamReader(bs))
             {
@@ -270,7 +310,7 @@ namespace PasswordCracker
                 while (foundMatch == false && (passwordFromFile = file.ReadLine()) != null)
                 {
 
-                    if (computeSHA256Hash(passwordFromFile).ToUpper() == _hashToCrack || computeSHA256Hash(passwordFromFile).ToLower() == _hashToCrack)
+                    if (computeSHA256Hash(passwordFromFile).ToUpper() == _HASH_TO_CRACK || computeSHA256Hash(passwordFromFile).ToLower() == _HASH_TO_CRACK)
                     {
                         statusBox.Visible = true;
                         statusBox.Image = global::PasswordCracker.Properties.Resources.successStatus;
@@ -279,7 +319,9 @@ namespace PasswordCracker
                         passwordFoundTextBox.Text = passwordFromFile;
                         scroll();
                         file.Close();
+                        _LOADING_STATUS = false;
                         foundMatch = true;
+                        thisThread.Join();
                     }
                     else
                     {
@@ -296,7 +338,8 @@ namespace PasswordCracker
                     scroll();
                 }
                 file.Close();
-
+                thisThread.Join();
+                _LOADING_STATUS = false;
             }
 
         }
@@ -304,18 +347,23 @@ namespace PasswordCracker
         {
             string passwordFromFile = "";
             bool foundMatch = false;
+            Thread thisThread = Thread.CurrentThread;
+
             progressConsole.Text += "#> Beginning Password File Ingest." + Environment.NewLine;
-            using (FileStream fs = File.Open(_importedPasswordList, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+
+            using (FileStream fs = File.Open(_IMPORTED_PASSWORDLIST, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (BufferedStream bs = new BufferedStream(fs))
             using (StreamReader file = new StreamReader(bs))
             {
                 progressConsole.Text += "#> Finished Password File Ingest." + Environment.NewLine;
                 progressConsole.Text += "#> Beginning Brute Force Attack" + Environment.NewLine;
+
                 scroll();
+
                 while (foundMatch == false && (passwordFromFile = file.ReadLine()) != null)
                 {
 
-                    if (computeNTLMHash(passwordFromFile).ToUpper() == _hashToCrack || computeNTLMHash(passwordFromFile).ToLower() == _hashToCrack)
+                    if (computeNTLMHash(passwordFromFile).ToUpper() == _HASH_TO_CRACK || computeNTLMHash(passwordFromFile).ToLower() == _HASH_TO_CRACK)
                     {
                         
                         statusBox.Visible = true;
@@ -326,6 +374,7 @@ namespace PasswordCracker
                         scroll();
                         file.Close();
                         foundMatch = true;
+                        thisThread.Join();
                     }
                     else
                     {
@@ -343,8 +392,9 @@ namespace PasswordCracker
                     scroll();
                 }
                
-                file.Close();
-
+                file.Close(); 
+                thisThread.Join();
+                _LOADING_STATUS = false;
             }
 
         }
@@ -547,7 +597,7 @@ namespace PasswordCracker
         #region 
         private void initMainFont()
         {
-            pfc = new PrivateFontCollection();
+            _PRIV_FONT_MEMORY = new PrivateFontCollection();
 
             int fontLength = Properties.Resources.vt323.Length;
             byte[] fontdata = Properties.Resources.vt323;
@@ -556,19 +606,19 @@ namespace PasswordCracker
             IntPtr data = Marshal.AllocCoTaskMem(fontLength);
             Marshal.Copy(fontdata, 0, data, fontLength);
 
-            pfc.AddMemoryFont(data, fontLength);
-            mainFont = new Font(pfc.Families[0], 18.0F);
-            progressConsole.Font = new Font(pfc.Families[0], 10.0F);
-            locateFile.Font = new Font(pfc.Families[0], 12.0F);
+            _PRIV_FONT_MEMORY.AddMemoryFont(data, fontLength);
+            _MAIN_UI_FONT = new Font(_PRIV_FONT_MEMORY.Families[0], 18.0F);
+            progressConsole.Font = new Font(_PRIV_FONT_MEMORY.Families[0], 10.0F);
+            locateFile.Font = new Font(_PRIV_FONT_MEMORY.Families[0], 12.0F);
         }
         private void onLoad()
         {
             this.DoubleBuffered = true;
             initMainFont();
-            hashTextBox.Font = mainFont;
-            selectedFileTextBox.Font = mainFont;
-            algorithComboBox.Font = mainFont;
-            passwordFoundTextBox.Font = mainFont;
+            hashTextBox.Font = _MAIN_UI_FONT;
+            selectedFileTextBox.Font = _MAIN_UI_FONT;
+            algorithComboBox.Font = _MAIN_UI_FONT;
+            passwordFoundTextBox.Font = _MAIN_UI_FONT;
 
             statusBox.Visible = false;
 
@@ -617,7 +667,7 @@ namespace PasswordCracker
         {
             while (true)
             {
-                if (_loadingStatus == true)
+                if (_LOADING_STATUS == true)
                 {
                     loadingGIF.Visible = true;
                 }
@@ -644,11 +694,11 @@ namespace PasswordCracker
             //Work Out how many threads based on CPU cores
             //Below line is an example
             CPUNumCores();
-            progressConsole.Text += $"#> {_threadCount} Theads Will Be Used... {Environment.NewLine}";
+            progressConsole.Text += $"#> {_THREAD_COUNT} Theads Will Be Used... {Environment.NewLine}";
             progressConsole.Text += $"#> Program Loaded... {Environment.NewLine}";
             loadInstructions();
             enableUI(); 
-            _loadingStatus = false;
+            _LOADING_STATUS = false;
         }
         private void loadInstructions()
         {
@@ -716,7 +766,7 @@ namespace PasswordCracker
                 foreach (ManagementObject queryObj in searcher.Get())
                 {
                     progressConsole.Text += $"#> Number Of CPU Cores: {queryObj["NumberOfCores"]} {Environment.NewLine}";
-                    _threadCount = Convert.ToInt32(queryObj["NumberOfCores"]) * 2;
+                    _THREAD_COUNT = Convert.ToInt32(queryObj["NumberOfCores"]) * 2;
 
 
                 }
@@ -731,21 +781,21 @@ namespace PasswordCracker
         private void threadToFileCheck()
         {
             //Check if the current number of threads it too big for the file length
-            if (_passwordFileLineCount / _threadCount <= 1000)
+            if (_PASSWORD_FILE_LINE_COUNT / _THREAD_COUNT <= 1000)
             {
-                _threadCount = 1;
+                _THREAD_COUNT = 1;
             }
-            else if (_passwordFileLineCount / _threadCount > 1000 && _passwordFileLineCount / _threadCount <= 2000)
+            else if (_PASSWORD_FILE_LINE_COUNT / _THREAD_COUNT > 1000 && _PASSWORD_FILE_LINE_COUNT / _THREAD_COUNT <= 2000)
             {
-                _threadCount = 2; // File Split into 2 first half thread0 second halfthread1
+                _THREAD_COUNT = 2; // File Split into 2 first half thread0 second halfthread1
             }
-            else if (_passwordFileLineCount / _threadCount > 2000 && _passwordFileLineCount / _threadCount <= 3000)
+            else if (_PASSWORD_FILE_LINE_COUNT / _THREAD_COUNT > 2000 && _PASSWORD_FILE_LINE_COUNT / _THREAD_COUNT <= 3000)
             {
-                _threadCount = 3; // File Split into 3 first half thread0 second halfthread1 third to thread2
+                _THREAD_COUNT = 3; // File Split into 3 first half thread0 second halfthread1 third to thread2
             }
             else
             {
-                _threadCount = 4; //Use 4 threads if file is over
+                _THREAD_COUNT = 4; //Use 4 threads if file is over
             }
         }
         #endregion
@@ -756,39 +806,39 @@ namespace PasswordCracker
         #region
         private void checkFileLines()
         { 
-            _passwordFileLineCount = 0;
-            progressConsole.Text += $"#> File \"{_importedPasswordList}\" Loaded {Environment.NewLine}";
+            _PASSWORD_FILE_LINE_COUNT = 0;
+            progressConsole.Text += $"#> File \"{_IMPORTED_PASSWORDLIST}\" Loaded {Environment.NewLine}";
             progressConsole.Text += $"#> Calculating File Length... {Environment.NewLine}";
-            using (StreamReader r = new StreamReader(_importedPasswordList))
+            using (StreamReader r = new StreamReader(_IMPORTED_PASSWORDLIST))
             {
                 while (r.ReadLine() != null)
                 {
-                    _passwordFileLineCount++;
+                    _PASSWORD_FILE_LINE_COUNT++;
                 }
             }
             
-            progressConsole.Text += $"#> File has {_passwordFileLineCount} Passwords {Environment.NewLine}";
+            progressConsole.Text += $"#> File has {_PASSWORD_FILE_LINE_COUNT} Passwords {Environment.NewLine}";
             scroll();
         }
         #endregion
 
         private void main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (_theadRunning == true && MD5_thread_status == true)
+            if (_THREAD_RUNNING_STATUS == true && _MD5_MAIN_THREAD_STATUS == true)
             {
-                MD5_thread.Join();
+                _MD5_THREAD_MAIN.Join();
             }
-            if (_theadRunning == true && SHA1_thread_status == true)
+            if (_THREAD_RUNNING_STATUS == true && _SHA1_MAIN_THREAD_STATUS == true)
             {
-                SHA1_thread.Join();
+                _SHA1_THREAD_MAIN.Join();
             }
-            if (_theadRunning == true && SHA256_thread_status == true)
+            if (_THREAD_RUNNING_STATUS == true && _SHA256_MAIN_THREAD_STATUS == true)
             {
-                SHA256_thread.Join();
+                _SHA256_THREAD_MAIN.Join();
             }
-            if (_theadRunning == true && NTLM_thread_status == true)
+            if (_THREAD_RUNNING_STATUS == true && _NTLM_MAIN_THREAD_STATUS == true)
             {
-                NTLM_thread.Join();
+                _NTLM_THREAD_MAIN.Join();
             }
         }
     }

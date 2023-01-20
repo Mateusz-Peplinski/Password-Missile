@@ -116,10 +116,9 @@ namespace PasswordCracker
             statusBox.Visible = false;
             //progressConsole.Text = "";
 
-            if (_HASH_TO_CRACK != "") // Check if user has entered a hash value 
-            {
-                if (algorithComboBox.SelectedIndex != -1) // Check if the user has selcted an algorithm
-                {
+            if (_HASH_TO_CRACK != "" && algorithComboBox.SelectedIndex != -1 && _IMPORTED_PASSWORDLIST != null) // Check if user has entered a hash value 
+            {                                                                                               // make this if one line and check if locateFile is not null
+
                     scroll();
                     //MD5
                     if (algorithComboBox.SelectedIndex == 0)
@@ -159,23 +158,13 @@ namespace PasswordCracker
                         _NTLM_MAIN_THREAD_STATUS = true;
                         _LOADING_STATUS = true;
                     }
-                }
-                else
-                {
-                    scroll();
-                    statusBox.Visible = true;
-                    statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
-                    progressConsole.Text += "#> ERROR Please Select An Hash Algorith" + Environment.NewLine;
-
-                }
-
             }
             else
             {
                 scroll();
                 statusBox.Visible = true;
                 statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
-                progressConsole.Text += "#> ERROR Hash Box Is Empty" + Environment.NewLine;
+                progressConsole.Text += "#> ERROR " + Environment.NewLine; // make better error message
 
             }
         }
@@ -185,6 +174,12 @@ namespace PasswordCracker
         // ##########      Brute Force Stage & File Digest Region    ######### //
         // ################################################################### //
         #region 
+        /// <summary>
+        ///  The methods below will run as the parent threads for the user selected algoritm
+        ///  The file is ingested with a BufferedStream to increase proformance & read using a StreamReader
+        ///  Each method will itterate through the lines of the file, compute a hash and compater it to the _HASH_TO_CRACK
+        /// </summary>
+
         private void crackMD5()
         {
             string passwordFromFile = "";
@@ -199,11 +194,13 @@ namespace PasswordCracker
             {
                 progressConsole.Text += "#> Finished Password File Ingest." + Environment.NewLine;
                 progressConsole.Text += "#> Beginning Brute Force Attack" + Environment.NewLine;
+
                 scroll();
+
                 while (foundMatch == false && (passwordFromFile = file.ReadLine()) != null)
                 {
 
-                    if (compute(passwordFromFile).ToUpper() == _HASH_TO_CRACK || compute(passwordFromFile).ToLower() == _HASH_TO_CRACK)
+                    if (computeMD5Hash(passwordFromFile).ToUpper() == _HASH_TO_CRACK || computeMD5Hash(passwordFromFile).ToLower() == _HASH_TO_CRACK)
                     {
                         statusBox.Visible = true;
                         statusBox.Image = global::PasswordCracker.Properties.Resources.successStatus;
@@ -218,7 +215,6 @@ namespace PasswordCracker
                     }
                     else
                     {
-                        
                         foundMatch = false;
                     }
 
@@ -553,7 +549,7 @@ namespace PasswordCracker
 
         }
 
-        private static string compute(string passwordFromFile)
+        private static string computeMD5Hash(string passwordFromFile)
         {
             string md5Return = "";
             using (MD5 md5 = MD5.Create())

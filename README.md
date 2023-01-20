@@ -12,4 +12,4 @@
   <img width="600" src="src/resources/graphicsResources/passwordMissileDemo.gif" alt="mainScreenGIF">
 </p>
 </br>
-<iframe width="768" height="432" src="https://miro.com/app/live-embed/uXjVPwbxA1A=/?moveToViewport=-1251,-899,2900,1521&embedId=450810416220" frameborder="0" scrolling="no" allow="fullscreen; clipboard-read; clipboard-write" allowfullscreen></iframe>
+

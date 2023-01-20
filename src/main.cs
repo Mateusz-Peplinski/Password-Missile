@@ -123,7 +123,7 @@ namespace PasswordCracker
                     //MD5
                     if (algorithComboBox.SelectedIndex == 0)
                     {
-                        progressConsole.Text += "#> MD5 Selected..." + Environment.NewLine;
+                        progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> MD5 Selected..." + Environment.NewLine;
                         _MD5_THREAD_MAIN = new Thread(() => crackMD5());
                         _MD5_THREAD_MAIN.Start();
                         _MD5_MAIN_THREAD_STATUS = true;
@@ -132,7 +132,7 @@ namespace PasswordCracker
                     //SHA1
                     if (algorithComboBox.SelectedIndex == 1)
                     {
-                        progressConsole.Text += "#> SHA1 Selected..." + Environment.NewLine;
+                        progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> SHA1 Selected..." + Environment.NewLine;
                         _SHA1_THREAD_MAIN = new Thread(() => crackSHA1());
                         _SHA1_THREAD_MAIN.Start();
                         _SHA1_MAIN_THREAD_STATUS = true;
@@ -141,7 +141,7 @@ namespace PasswordCracker
                     //SHA256
                     if (algorithComboBox.SelectedIndex == 2)
                     {
-                        progressConsole.Text += "#> SHA256 Selected..." + Environment.NewLine;
+                        progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> SHA256 Selected..." + Environment.NewLine;
                         
                         _SHA256_THREAD_MAIN = new Thread(() => crackSHA256());
                         _SHA256_THREAD_MAIN.Start();
@@ -152,7 +152,7 @@ namespace PasswordCracker
                     //NTLM
                     if (algorithComboBox.SelectedIndex == 3)
                     {
-                        progressConsole.Text += "#> NTLM Selected..." + Environment.NewLine;
+                        progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> NTLM Selected..." + Environment.NewLine;
                         _NTLM_THREAD_MAIN = new Thread(() => crackNTLM());
                         _NTLM_THREAD_MAIN.Start();
                         _NTLM_MAIN_THREAD_STATUS = true;
@@ -164,7 +164,7 @@ namespace PasswordCracker
                 scroll();
                 statusBox.Visible = true;
                 statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
-                progressConsole.Text += "#> ERROR " + Environment.NewLine; // make better error message
+                progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> ERROR " + Environment.NewLine; // make better error message
 
             }
         }
@@ -186,14 +186,14 @@ namespace PasswordCracker
             bool foundMatch = false;
             Thread thisThread = Thread.CurrentThread;
 
-            progressConsole.Text += "#> Beginning Password File Ingest." + Environment.NewLine;
+            progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Beginning Password File Ingest." + Environment.NewLine;
 
             using (FileStream fs = File.Open(_IMPORTED_PASSWORDLIST, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (BufferedStream bs = new BufferedStream(fs))
             using (StreamReader file = new StreamReader(bs))
             {
-                progressConsole.Text += "#> Finished Password File Ingest." + Environment.NewLine;
-                progressConsole.Text += "#> Beginning Brute Force Attack" + Environment.NewLine;
+                progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Finished Password File Ingest." + Environment.NewLine;
+                progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Beginning Brute Force Attack" + Environment.NewLine;
 
                 scroll();
 
@@ -204,7 +204,7 @@ namespace PasswordCracker
                     {
                         statusBox.Visible = true;
                         statusBox.Image = global::PasswordCracker.Properties.Resources.successStatus;
-                        progressConsole.Text += "#> Success Password was found" + Environment.NewLine;
+                        progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Success Password was found" + Environment.NewLine;
                         passwordFoundTextBox.Text = passwordFromFile;
                         scroll();
                         file.Close();
@@ -223,7 +223,7 @@ namespace PasswordCracker
                 {
                     statusBox.Visible = true;
                     statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
-                    progressConsole.Text += "#> Error No Password Was Found" + Environment.NewLine;
+                    progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Error No Password Was Found" + Environment.NewLine;
                     scroll();
                 }
                 
@@ -239,14 +239,14 @@ namespace PasswordCracker
             bool foundMatch = false;
             Thread thisThread = Thread.CurrentThread;
 
-            progressConsole.Text += "#> Beginning Password File Ingest." + Environment.NewLine;
+            progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Beginning Password File Ingest." + Environment.NewLine;
 
             using (FileStream fs = File.Open(_IMPORTED_PASSWORDLIST, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (BufferedStream bs = new BufferedStream(fs))
             using (StreamReader file = new StreamReader(bs))
             {
-                progressConsole.Text += "#> Finished Password File Ingest." + Environment.NewLine;
-                progressConsole.Text += "#> Beginning Brute Force Attack" + Environment.NewLine;
+                progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Finished Password File Ingest." + Environment.NewLine;
+                progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Beginning Brute Force Attack" + Environment.NewLine;
 
                 scroll();
 
@@ -257,7 +257,7 @@ namespace PasswordCracker
                     {
                         statusBox.Visible = true;
                         statusBox.Image = global::PasswordCracker.Properties.Resources.successStatus;
-                        progressConsole.Text += "#> Success Password was found" + Environment.NewLine ;
+                        progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Success Password was found" + Environment.NewLine ;
                         passwordFoundTextBox.Text = "";
                         passwordFoundTextBox.Text = passwordFromFile;
                         scroll();
@@ -277,7 +277,7 @@ namespace PasswordCracker
                 {
                     statusBox.Visible = true;
                     statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
-                    progressConsole.Text += "#> Error No Password Was Found" + Environment.NewLine;
+                    progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Error No Password Was Found" + Environment.NewLine;
                     scroll();
                 }
                 
@@ -293,14 +293,14 @@ namespace PasswordCracker
             bool foundMatch = false;
             Thread thisThread = Thread.CurrentThread;
 
-            progressConsole.Text += "#> Beginning Password File Ingest." + Environment.NewLine;
+            progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Beginning Password File Ingest." + Environment.NewLine;
 
             using (FileStream fs = File.Open(_IMPORTED_PASSWORDLIST, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (BufferedStream bs = new BufferedStream(fs))
             using (StreamReader file = new StreamReader(bs))
             {
-                progressConsole.Text += "#> Finished Password File Ingest." + Environment.NewLine;
-                progressConsole.Text += "#> Beginning Brute Force Attack" + Environment.NewLine;
+                progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Finished Password File Ingest." + Environment.NewLine;
+                progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Beginning Brute Force Attack" + Environment.NewLine;
                 scroll();
 
                 while (foundMatch == false && (passwordFromFile = file.ReadLine()) != null)
@@ -310,7 +310,7 @@ namespace PasswordCracker
                     {
                         statusBox.Visible = true;
                         statusBox.Image = global::PasswordCracker.Properties.Resources.successStatus;
-                        progressConsole.Text += "#> Success Password was found" + Environment.NewLine;
+                        progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Success Password was found" + Environment.NewLine;
                         passwordFoundTextBox.Text = "";
                         passwordFoundTextBox.Text = passwordFromFile;
                         scroll();
@@ -330,7 +330,7 @@ namespace PasswordCracker
                 {
                     statusBox.Visible = true;
                     statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
-                    progressConsole.Text += "#> Error No Password Was Found" + Environment.NewLine;
+                    progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Error No Password Was Found" + Environment.NewLine;
                     scroll();
                 }
                 file.Close();
@@ -345,14 +345,14 @@ namespace PasswordCracker
             bool foundMatch = false;
             Thread thisThread = Thread.CurrentThread;
 
-            progressConsole.Text += "#> Beginning Password File Ingest." + Environment.NewLine;
+            progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Beginning Password File Ingest." + Environment.NewLine;
 
             using (FileStream fs = File.Open(_IMPORTED_PASSWORDLIST, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (BufferedStream bs = new BufferedStream(fs))
             using (StreamReader file = new StreamReader(bs))
             {
-                progressConsole.Text += "#> Finished Password File Ingest." + Environment.NewLine;
-                progressConsole.Text += "#> Beginning Brute Force Attack" + Environment.NewLine;
+                progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Finished Password File Ingest." + Environment.NewLine;
+                progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Beginning Brute Force Attack" + Environment.NewLine;
 
                 scroll();
 
@@ -366,7 +366,7 @@ namespace PasswordCracker
                         statusBox.Image = global::PasswordCracker.Properties.Resources.successStatus;
                         passwordFoundTextBox.Text = "";
                         passwordFoundTextBox.Text = passwordFromFile;
-                        progressConsole.Text += "#> Success Password was found" + Environment.NewLine;
+                        progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Success Password was found" + Environment.NewLine;
                         scroll();
                         file.Close();
                         foundMatch = true;
@@ -384,7 +384,7 @@ namespace PasswordCracker
                     
                     statusBox.Visible = true;
                     statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
-                    progressConsole.Text += "#> Error No Password Was Found" + Environment.NewLine;
+                    progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Error No Password Was Found" + Environment.NewLine;
                     scroll();
                 }
                
@@ -400,7 +400,7 @@ namespace PasswordCracker
         // ##########            Generate Hash Region                ######### //
         // ################################################################### //
         #region 
-        public static string computeNTLMHash(string passwordFromFile)
+        public string computeNTLMHash(string passwordFromFile)
         {
             // IMPORTANT !
             // Credits to Mustafa Chelik (Original Code in c/c++)
@@ -533,7 +533,7 @@ namespace PasswordCracker
             return string.Join(string.Empty, hex_format);
         }
 
-        private static string computeSHA256Hash(string passwordFromFile)
+        private string computeSHA256Hash(string passwordFromFile)
         {
             if (String.IsNullOrEmpty(passwordFromFile))
             {
@@ -549,7 +549,7 @@ namespace PasswordCracker
 
         }
 
-        private static string computeMD5Hash(string passwordFromFile)
+        private string computeMD5Hash(string passwordFromFile)
         {
             string md5Return = "";
             using (MD5 md5 = MD5.Create())
@@ -562,7 +562,7 @@ namespace PasswordCracker
             }
         }
 
-        private static string computeSHA1Hash(string passwordFromFile)
+        private string computeSHA1Hash(string passwordFromFile)
         {
             using (SHA1Managed sha1 = new SHA1Managed())
             {
@@ -578,7 +578,7 @@ namespace PasswordCracker
             }
         }
 
-        public static string ByteArrayToString(byte[] ba)
+        public string ByteArrayToString(byte[] ba)
         {
             StringBuilder hex = new StringBuilder(ba.Length * 2);
             foreach (byte b in ba)
@@ -686,21 +686,21 @@ namespace PasswordCracker
             CPUArch();
             
 
-            progressConsole.Text += $"#> Working Out Thread Count... {Environment.NewLine}";
+            progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + $"#> Working Out Thread Count... {Environment.NewLine}";
             //Work Out how many threads based on CPU cores
             //Below line is an example
             CPUNumCores();
-            progressConsole.Text += $"#> {_THREAD_COUNT} Theads Will Be Used... {Environment.NewLine}";
-            progressConsole.Text += $"#> Program Loaded... {Environment.NewLine}";
+            progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + $"#> {_THREAD_COUNT} Theads Will Be Used... {Environment.NewLine}";
+            progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + $"#> Program Loaded... {Environment.NewLine}";
             loadInstructions();
             enableUI(); 
             _LOADING_STATUS = false;
         }
         private void loadInstructions()
         {
-            progressConsole.AppendText($"#> Enter a Valid Hash {Environment.NewLine}");
-            progressConsole.AppendText($"#> Locate a Valid Password File {Environment.NewLine}");
-            progressConsole.AppendText($"#> Select a Valid Algorithm To Match the Hash {Environment.NewLine}");
+            progressConsole.AppendText("[" + DateTime.Now.ToString("h:mm:ss") + "]" + $"#> Enter a Valid Hash {Environment.NewLine}");
+            progressConsole.AppendText("[" + DateTime.Now.ToString("h:mm:ss") + "]" + $"#> Locate a Valid Password File {Environment.NewLine}");
+            progressConsole.AppendText("[" + DateTime.Now.ToString("h:mm:ss") + "]" + $"#> Select a Valid Algorithm To Match the Hash {Environment.NewLine}");
             scroll();
 
         }
@@ -724,7 +724,7 @@ namespace PasswordCracker
 
                 foreach (ManagementObject queryObj in searcher.Get())
                 {
-                    progressConsole.Text += $"#> Detected CPU: {queryObj["Name"]} {Environment.NewLine}";
+                    progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + $"#> Detected CPU: {queryObj["Name"]} {Environment.NewLine}";
                 }
             }
             catch (ManagementException e)
@@ -743,7 +743,7 @@ namespace PasswordCracker
                 foreach (ManagementObject queryObj in searcher.Get())
                 {
 
-                    progressConsole.Text += $"#> Address Width: {queryObj["AddressWidth"]} bit {Environment.NewLine}";
+                    progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + $"#> Address Width: {queryObj["AddressWidth"]} bit {Environment.NewLine}";
                 }
             }
             catch (ManagementException e)
@@ -761,7 +761,7 @@ namespace PasswordCracker
 
                 foreach (ManagementObject queryObj in searcher.Get())
                 {
-                    progressConsole.Text += $"#> Number Of CPU Cores: {queryObj["NumberOfCores"]} {Environment.NewLine}";
+                    progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + $"#> Number Of CPU Cores: {queryObj["NumberOfCores"]} {Environment.NewLine}";
                     _THREAD_COUNT = Convert.ToInt32(queryObj["NumberOfCores"]) * 2;
 
 

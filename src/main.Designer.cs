@@ -60,7 +60,7 @@
             this.locateFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.locateFile.ForeColor = System.Drawing.Color.Chartreuse;
             this.locateFile.Location = new System.Drawing.Point(266, 57);
-            this.locateFile.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.locateFile.Margin = new System.Windows.Forms.Padding(2);
             this.locateFile.Name = "locateFile";
             this.locateFile.Size = new System.Drawing.Size(102, 26);
             this.locateFile.TabIndex = 0;
@@ -81,7 +81,7 @@
             this.hashTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.hashTextBox.ForeColor = System.Drawing.Color.Chartreuse;
             this.hashTextBox.Location = new System.Drawing.Point(266, 16);
-            this.hashTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.hashTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.hashTextBox.Name = "hashTextBox";
             this.hashTextBox.Size = new System.Drawing.Size(379, 26);
             this.hashTextBox.TabIndex = 4;
@@ -94,7 +94,7 @@
             this.passwordFoundTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.passwordFoundTextBox.ForeColor = System.Drawing.Color.Chartreuse;
             this.passwordFoundTextBox.Location = new System.Drawing.Point(288, 276);
-            this.passwordFoundTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.passwordFoundTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.passwordFoundTextBox.Name = "passwordFoundTextBox";
             this.passwordFoundTextBox.ReadOnly = true;
             this.passwordFoundTextBox.Size = new System.Drawing.Size(228, 26);
@@ -108,7 +108,7 @@
             this.selectedFileTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.selectedFileTextBox.ForeColor = System.Drawing.Color.Chartreuse;
             this.selectedFileTextBox.Location = new System.Drawing.Point(372, 55);
-            this.selectedFileTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.selectedFileTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.selectedFileTextBox.Name = "selectedFileTextBox";
             this.selectedFileTextBox.ReadOnly = true;
             this.selectedFileTextBox.Size = new System.Drawing.Size(272, 26);
@@ -133,12 +133,13 @@
             this._abort.BackColor = System.Drawing.Color.Transparent;
             this._abort.Cursor = System.Windows.Forms.Cursors.Hand;
             this._abort.Image = global::PasswordCracker.Properties.Resources._abortButton;
-            this._abort.Location = new System.Drawing.Point(491, 169);
+            this._abort.Location = new System.Drawing.Point(495, 169);
             this._abort.Name = "_abort";
-            this._abort.Size = new System.Drawing.Size(129, 46);
+            this._abort.Size = new System.Drawing.Size(129, 42);
             this._abort.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this._abort.TabIndex = 14;
             this._abort.TabStop = false;
+            this._abort.Click += new System.EventHandler(this._abort_Click);
             this._abort.MouseLeave += new System.EventHandler(this._abort_MouseLeave);
             // 
             // progressConsole
@@ -149,7 +150,7 @@
             this.progressConsole.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.progressConsole.ForeColor = System.Drawing.Color.Chartreuse;
             this.progressConsole.Location = new System.Drawing.Point(8, 349);
-            this.progressConsole.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.progressConsole.Margin = new System.Windows.Forms.Padding(2);
             this.progressConsole.Multiline = true;
             this.progressConsole.Name = "progressConsole";
             this.progressConsole.ReadOnly = true;
@@ -177,7 +178,7 @@
             this._abortOnLoad.Image = global::PasswordCracker.Properties.Resources._abortButton;
             this._abortOnLoad.Location = new System.Drawing.Point(499, 169);
             this._abortOnLoad.Name = "_abortOnLoad";
-            this._abortOnLoad.Size = new System.Drawing.Size(117, 42);
+            this._abortOnLoad.Size = new System.Drawing.Size(121, 42);
             this._abortOnLoad.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this._abortOnLoad.TabIndex = 17;
             this._abortOnLoad.TabStop = false;
@@ -209,7 +210,7 @@
             this.loadingGIF.BackColor = System.Drawing.Color.Transparent;
             this.loadingGIF.Image = global::PasswordCracker.Properties.Resources.loadingLoop;
             this.loadingGIF.Location = new System.Drawing.Point(430, 221);
-            this.loadingGIF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.loadingGIF.Margin = new System.Windows.Forms.Padding(2);
             this.loadingGIF.Name = "loadingGIF";
             this.loadingGIF.Size = new System.Drawing.Size(94, 41);
             this.loadingGIF.TabIndex = 21;
@@ -255,7 +256,7 @@
             this.Controls.Add(this._abortOnLoad);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "main";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Password Missile";

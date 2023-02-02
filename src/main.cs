@@ -55,10 +55,10 @@ namespace PasswordCracker
         Thread _NTLM_THREAD_MAIN;
 
         //Main Threads status
-        bool _MD5_MAIN_THREAD_EXIT_STATUS;
-        bool _SHA1_MAIN_THREAD_EXIT_STATUS;
-        bool _SHA256_MAIN_THREAD_EXIT_STATUS;
-        bool _NTLM_MAIN_THREAD_EXIT_STATUS;
+        bool _MD5_MAIN_THREAD_EXIT_STATUS = true;
+        bool _SHA1_MAIN_THREAD_EXIT_STATUS = true;
+        bool _SHA256_MAIN_THREAD_EXIT_STATUS = true;
+        bool _NTLM_MAIN_THREAD_EXIT_STATUS = true;
         #endregion
 
         /// <summary>
@@ -67,16 +67,17 @@ namespace PasswordCracker
         public main()
         {
             InitializeComponent();
+            Control.CheckForIllegalCrossThreadCalls = false;
             onLoad();
-            diableUI();
+            
 
-            Task checkLoadStatus = new Task(new Action(loadingLoop)); // Thread that will run until formClose() (It will check the _LOADING_STATUS and run or stop loading animation)
-            checkLoadStatus.Start();
+            //Task checkLoadStatus = new Task(new Action(loadingLoop)); // Thread that will run until formClose() (It will check the _LOADING_STATUS and run or stop loading animation)
+            //checkLoadStatus.Start();
 
-            _LOADING_STATUS = true; // Begin load animation 
+            //_LOADING_STATUS = true; // Begin load animation 
 
-            Task initCPUCheck = new Task(new Action(CPUCheck)); // Thread to check the CPU and work out core count to work out how much threads to use (password list lenght will also affect thread count)
-            initCPUCheck.Start();
+            //Task initCPUCheck = new Task(new Action(CPUCheck)); // Thread to check the CPU and work out core count to work out how much threads to use (password list lenght will also affect thread count)
+            //initCPUCheck.Start();
         }
 
         // ################################################################### //
@@ -124,25 +125,36 @@ namespace PasswordCracker
                 if (algorithComboBox.SelectedIndex == 0)
                 {
                     progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> MD5 Selected..." + Environment.NewLine;
+
                     _MD5_THREAD_MAIN = new Thread(() => crackMD5());
                     _MD5_THREAD_MAIN.IsBackground = true;
+                    _MD5_MAIN_THREAD_EXIT_STATUS = false;
                     _MD5_THREAD_MAIN.Start();
+
+                    _LOADING_STATUS = true;
                     _abort.Enabled = true;
                     _abortOnLoad.Enabled = true;
-                    _MD5_MAIN_THREAD_EXIT_STATUS = false;
-                    _LOADING_STATUS = true;
+                    _launch.Enabled = false;
+                    _launchOnLoad.Enabled = false;
+                    
                 }
                 //SHA1
                 if (algorithComboBox.SelectedIndex == 1)
                 {
                     progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> SHA1 Selected..." + Environment.NewLine;
+
                     _SHA1_THREAD_MAIN = new Thread(() => crackSHA1());
                     _SHA1_THREAD_MAIN.IsBackground = true;
+                    _SHA1_MAIN_THREAD_EXIT_STATUS = false;
                     _SHA1_THREAD_MAIN.Start();
+
+                    _LOADING_STATUS = true;
                     _abort.Enabled = true;
                     _abortOnLoad.Enabled = true;
-                    _SHA1_MAIN_THREAD_EXIT_STATUS = false;
-                    _LOADING_STATUS = true;
+                    _launch.Enabled = false;
+                    _launchOnLoad.Enabled = false;
+                    
+                    
                 }
                 //SHA256
                 if (algorithComboBox.SelectedIndex == 2)
@@ -154,7 +166,7 @@ namespace PasswordCracker
                     _abort.Enabled = true;
                     _abortOnLoad.Enabled = true;
                     _LOADING_STATUS = true;
-                    _SHA1_MAIN_THREAD_EXIT_STATUS = true;
+                    _SHA256_MAIN_THREAD_EXIT_STATUS = false;
 
                 }
                 //NTLM
@@ -190,30 +202,30 @@ namespace PasswordCracker
             {
                 _MD5_MAIN_THREAD_EXIT_STATUS = true;
                 _MD5_THREAD_MAIN.Abort();
-                progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Error _MD5_THREAD_MAIN Aborted" + Environment.NewLine;
+                progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Success _MD5_THREAD_MAIN Aborted" + Environment.NewLine;
                 _LOADING_STATUS = false;
             }
             if (_SHA1_MAIN_THREAD_EXIT_STATUS == false)
             {
                 _SHA1_MAIN_THREAD_EXIT_STATUS = true;
-                _SHA1_THREAD_MAIN.Join();
-                progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Error _SHA1_THREAD_MAIN Aborted" + Environment.NewLine;
+                _SHA1_THREAD_MAIN.Abort();
+                progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Success _SHA1_THREAD_MAIN Aborted" + Environment.NewLine;
                 _LOADING_STATUS = false;
             }
-            if (_SHA256_MAIN_THREAD_EXIT_STATUS == false)
-            {
-                _SHA256_MAIN_THREAD_EXIT_STATUS = true;
-                _SHA256_THREAD_MAIN.Join();
-                progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Error _SHA256_THREAD_MAIN Aborted" + Environment.NewLine;
-                _LOADING_STATUS = false;
-            }
-            if (_NTLM_MAIN_THREAD_EXIT_STATUS == false)
-            {
-                _NTLM_MAIN_THREAD_EXIT_STATUS = true;
-                _NTLM_THREAD_MAIN.Join();
-                progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Error _NTLM_THREAD_MAIN Aborted" + Environment.NewLine;
-                _LOADING_STATUS = false;
-            }
+            //if (_SHA256_MAIN_THREAD_EXIT_STATUS == false)
+            //{
+            //    _SHA256_MAIN_THREAD_EXIT_STATUS = true;
+            //    _SHA256_THREAD_MAIN.Join();
+            //    progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Error _SHA256_THREAD_MAIN Aborted" + Environment.NewLine;
+            //    _LOADING_STATUS = false;
+            //}
+            //if (_NTLM_MAIN_THREAD_EXIT_STATUS == false)
+            //{
+            //    _NTLM_MAIN_THREAD_EXIT_STATUS = true;
+            //    _NTLM_THREAD_MAIN.Join();
+            //    progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Error _NTLM_THREAD_MAIN Aborted" + Environment.NewLine;
+            //    _LOADING_STATUS = false;
+            //}
         }
         #endregion
 
@@ -230,6 +242,7 @@ namespace PasswordCracker
         private void crackMD5()
         {
             string passwordFromFile = "";
+            string computedHash;
             bool foundMatch = false;
 
             progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Beginning Password File Ingest." + Environment.NewLine;
@@ -243,10 +256,11 @@ namespace PasswordCracker
 
                 scroll();
 
-                while (foundMatch == false && (passwordFromFile = file.ReadLine()) != null && _MD5_MAIN_THREAD_EXIT_STATUS == false)
+                while ((foundMatch == false && (passwordFromFile = file.ReadLine()) != null) && _MD5_MAIN_THREAD_EXIT_STATUS == false)
                 {
+                    computedHash = computeMD5Hash(passwordFromFile);
 
-                    if (computeMD5Hash(passwordFromFile).ToUpper() == _HASH_TO_CRACK || computeMD5Hash(passwordFromFile).ToLower() == _HASH_TO_CRACK)
+                    if (computedHash.ToUpper() == _HASH_TO_CRACK || computedHash.ToLower() == _HASH_TO_CRACK)
                     {
                         statusBox.Visible = true;
                         statusBox.Image = global::PasswordCracker.Properties.Resources.successStatus;
@@ -263,16 +277,13 @@ namespace PasswordCracker
                     else
                     {
                         foundMatch = false;
-                    }
-                    continue;
-
-
+                    }     
                 }
                 if (foundMatch == false)
                 {
                     statusBox.Visible = true;
                     statusBox.Image = global::PasswordCracker.Properties.Resources.errorStatus;
-                    progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Error No Password Was Found" + Environment.NewLine;
+                    progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + $"#> Error Matching Password was Found in {_IMPORTED_PASSWORDLIST} {Environment.NewLine}";
                     scroll();
                 }
 
@@ -744,19 +755,18 @@ namespace PasswordCracker
         #region    
         private void CPUCheck()
         {
-            CPUModel();
-            CPUArch();
-
-
+            diableUI();
+            //CPUModel();
+            //CPUArch();
             progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + $"#> Working Out Thread Count... {Environment.NewLine}";
             //Work Out how many threads based on CPU cores
             //Below line is an example
-            CPUNumCores();
+            //CPUNumCores();
             progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + $"#> {_THREAD_COUNT} Theads Will Be Used... {Environment.NewLine}";
             progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + $"#> Program Loaded... {Environment.NewLine}";
             loadInstructions();
             enableUI();
-            _LOADING_STATUS = false;
+            //_LOADING_STATUS = false;
         }
         private void loadInstructions()
         {
@@ -836,6 +846,29 @@ namespace PasswordCracker
             }
 
         }
+       
+        #endregion
+
+        // ################################################################### //
+        // ##########                   File Check                   ######### //
+        // ################################################################### //
+        #region
+        private void checkFileLines()
+        {
+            _PASSWORD_FILE_LINE_COUNT = 0;
+            progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + $"#> File \"{_IMPORTED_PASSWORDLIST}\" Loaded {Environment.NewLine}";
+            progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + $"#> Calculating File Length... {Environment.NewLine}";
+            using (StreamReader r = new StreamReader(_IMPORTED_PASSWORDLIST))
+            {
+                while (r.ReadLine() != null)
+                {
+                    _PASSWORD_FILE_LINE_COUNT++;
+                }
+            }
+
+            progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + $"#> File has {_PASSWORD_FILE_LINE_COUNT} Passwords {Environment.NewLine}";
+            scroll();
+        }
         private void threadToFileCheck()
         {
             //Check if the current number of threads it too big for the file length
@@ -855,28 +888,6 @@ namespace PasswordCracker
             {
                 _THREAD_COUNT = 4; //Use 4 threads if file is over
             }
-        }
-        #endregion
-
-        // ################################################################### //
-        // ##########                   File Check                   ######### //
-        // ################################################################### //
-        #region
-        private void checkFileLines()
-        {
-            _PASSWORD_FILE_LINE_COUNT = 0;
-            progressConsole.Text += $"#> File \"{_IMPORTED_PASSWORDLIST}\" Loaded {Environment.NewLine}";
-            progressConsole.Text += $"#> Calculating File Length... {Environment.NewLine}";
-            using (StreamReader r = new StreamReader(_IMPORTED_PASSWORDLIST))
-            {
-                while (r.ReadLine() != null)
-                {
-                    _PASSWORD_FILE_LINE_COUNT++;
-                }
-            }
-
-            progressConsole.Text += $"#> File has {_PASSWORD_FILE_LINE_COUNT} Passwords {Environment.NewLine}";
-            scroll();
         }
         #endregion
 

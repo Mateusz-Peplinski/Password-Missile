@@ -19,7 +19,7 @@
 | :warning: Main thread Locks Up after finishing  |
 |-----------------------------------------|
 
-| :warning: Loading loop not showing somtimes   |
+| :warning: Loading loop not showing sometimes   |
 |-----------------------------------------|
 
 | :warning: Cannot run program twice as main hash thread locks when it completes!   |

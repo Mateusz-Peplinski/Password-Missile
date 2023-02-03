@@ -13,7 +13,7 @@
 </p>
 </br>
 
-##Bugs To fix:
+## Bugs To fix:
 </br>
 | :warning: Main thread Locks Up after finishing  |
 |-----------------------------------------|

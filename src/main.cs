@@ -49,16 +49,16 @@ namespace PasswordCracker
         private Font _MAIN_UI_FONT;
 
         // Main Threads
-        Thread _MD5_THREAD_MAIN;
-        Thread _SHA1_THREAD_MAIN;
-        Thread _SHA256_THREAD_MAIN;
-        Thread _NTLM_THREAD_MAIN;
+        private Thread _MD5_THREAD_MAIN;
+        private Thread _SHA1_THREAD_MAIN;
+        private Thread _SHA256_THREAD_MAIN;
+        private Thread _NTLM_THREAD_MAIN;
 
         //Main Threads status
-        bool _MD5_MAIN_THREAD_EXIT_STATUS = true;
-        bool _SHA1_MAIN_THREAD_EXIT_STATUS = true;
-        bool _SHA256_MAIN_THREAD_EXIT_STATUS = true;
-        bool _NTLM_MAIN_THREAD_EXIT_STATUS = true;
+        private bool _MD5_MAIN_THREAD_EXIT_STATUS = true;
+        private bool _SHA1_MAIN_THREAD_EXIT_STATUS = true;
+        private bool _SHA256_MAIN_THREAD_EXIT_STATUS = true;
+        private bool _NTLM_MAIN_THREAD_EXIT_STATUS = true;
         #endregion
 
         /// <summary>
@@ -69,10 +69,10 @@ namespace PasswordCracker
             InitializeComponent();
             Control.CheckForIllegalCrossThreadCalls = false;
             onLoad();
-            
 
-            //Task checkLoadStatus = new Task(new Action(loadingLoop)); // Thread that will run until formClose() (It will check the _LOADING_STATUS and run or stop loading animation)
-            //checkLoadStatus.Start();
+
+            Task checkLoadStatus = new Task(new Action(loadingLoop)); // Thread that will run until formClose() (It will check the _LOADING_STATUS and run or stop loading animation)
+            checkLoadStatus.Start();
 
             //_LOADING_STATUS = true; // Begin load animation 
 
@@ -106,7 +106,11 @@ namespace PasswordCracker
 
 
         }
-
+        private void uniquePasswordGenerationToolToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            genarator passwordGenFrom = new genarator();
+            passwordGenFrom.Show();
+        }
         /// <summary>
         /// This event will trigger the whole password cracking process
         /// It will trigger the main parent thread for the selected algorithm 
@@ -115,6 +119,15 @@ namespace PasswordCracker
         {
             _HASH_TO_CRACK += hashTextBox.Text;
             statusBox.Visible = false;
+
+            // RESET
+            _LOADING_STATUS = false;
+            _THREAD_RUNNING_STATUS = false;
+            _MD5_MAIN_THREAD_EXIT_STATUS = true;
+            _SHA1_MAIN_THREAD_EXIT_STATUS = true;
+            _SHA256_MAIN_THREAD_EXIT_STATUS = true;
+            _NTLM_MAIN_THREAD_EXIT_STATUS = true;
+
             //progressConsole.Text = "";
 
             if (_HASH_TO_CRACK != "" && algorithComboBox.SelectedIndex != -1 && _IMPORTED_PASSWORDLIST != null) // Check if user has entered a hash value 
@@ -136,7 +149,8 @@ namespace PasswordCracker
                     _abortOnLoad.Enabled = true;
                     _launch.Enabled = false;
                     _launchOnLoad.Enabled = false;
-                    
+
+
                 }
                 //SHA1
                 if (algorithComboBox.SelectedIndex == 1)
@@ -153,8 +167,8 @@ namespace PasswordCracker
                     _abortOnLoad.Enabled = true;
                     _launch.Enabled = false;
                     _launchOnLoad.Enabled = false;
-                    
-                    
+
+
                 }
                 //SHA256
                 if (algorithComboBox.SelectedIndex == 2)
@@ -193,6 +207,10 @@ namespace PasswordCracker
         }
         private void main_FormClosing(object sender, FormClosingEventArgs e)
         {
+            _MD5_MAIN_THREAD_EXIT_STATUS = false;
+            _SHA1_MAIN_THREAD_EXIT_STATUS = false;
+            _SHA256_MAIN_THREAD_EXIT_STATUS = false;
+            _NTLM_MAIN_THREAD_EXIT_STATUS = false;
             Environment.Exit(Environment.ExitCode);
         }
 
@@ -212,20 +230,20 @@ namespace PasswordCracker
                 progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Success _SHA1_THREAD_MAIN Aborted" + Environment.NewLine;
                 _LOADING_STATUS = false;
             }
-            //if (_SHA256_MAIN_THREAD_EXIT_STATUS == false)
-            //{
-            //    _SHA256_MAIN_THREAD_EXIT_STATUS = true;
-            //    _SHA256_THREAD_MAIN.Join();
-            //    progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Error _SHA256_THREAD_MAIN Aborted" + Environment.NewLine;
-            //    _LOADING_STATUS = false;
-            //}
-            //if (_NTLM_MAIN_THREAD_EXIT_STATUS == false)
-            //{
-            //    _NTLM_MAIN_THREAD_EXIT_STATUS = true;
-            //    _NTLM_THREAD_MAIN.Join();
-            //    progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Error _NTLM_THREAD_MAIN Aborted" + Environment.NewLine;
-            //    _LOADING_STATUS = false;
-            //}
+            if (_SHA256_MAIN_THREAD_EXIT_STATUS == false)
+            {
+                _SHA256_MAIN_THREAD_EXIT_STATUS = true;
+                _SHA256_THREAD_MAIN.Join();
+                progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Error _SHA256_THREAD_MAIN Aborted" + Environment.NewLine;
+                _LOADING_STATUS = false;
+            }
+            if (_NTLM_MAIN_THREAD_EXIT_STATUS == false)
+            {
+                _NTLM_MAIN_THREAD_EXIT_STATUS = true;
+                _NTLM_THREAD_MAIN.Join();
+                progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Error _NTLM_THREAD_MAIN Aborted" + Environment.NewLine;
+                _LOADING_STATUS = false;
+            }
         }
         #endregion
 
@@ -247,7 +265,7 @@ namespace PasswordCracker
 
             progressConsole.Text += "[" + DateTime.Now.ToString("h:mm:ss") + "]" + "#> Beginning Password File Ingest." + Environment.NewLine;
 
-            using (FileStream fs = File.Open(_IMPORTED_PASSWORDLIST, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (FileStream fs = File.Open(_IMPORTED_PASSWORDLIST, FileMode.Open, FileAccess.Read, FileShare.Read))
             using (BufferedStream bs = new BufferedStream(fs))
             using (StreamReader file = new StreamReader(bs))
             {
@@ -277,7 +295,7 @@ namespace PasswordCracker
                     else
                     {
                         foundMatch = false;
-                    }     
+                    }
                 }
                 if (foundMatch == false)
                 {
@@ -678,6 +696,7 @@ namespace PasswordCracker
             _MAIN_UI_FONT = new Font(_PRIV_FONT_MEMORY.Families[0], 18.0F);
             progressConsole.Font = new Font(_PRIV_FONT_MEMORY.Families[0], 10.0F);
             locateFile.Font = new Font(_PRIV_FONT_MEMORY.Families[0], 12.0F);
+            menuStrip1.Font = new Font(_PRIV_FONT_MEMORY.Families[0], 12.0F);
         }
         private void onLoad()
         {
@@ -687,7 +706,7 @@ namespace PasswordCracker
             selectedFileTextBox.Font = _MAIN_UI_FONT;
             algorithComboBox.Font = _MAIN_UI_FONT;
             passwordFoundTextBox.Font = _MAIN_UI_FONT;
-
+           
             statusBox.Visible = false;
 
             _launch.Visible = false;
@@ -846,7 +865,7 @@ namespace PasswordCracker
             }
 
         }
-       
+
         #endregion
 
         // ################################################################### //
@@ -889,9 +908,11 @@ namespace PasswordCracker
                 _THREAD_COUNT = 4; //Use 4 threads if file is over
             }
         }
+
+
         #endregion
 
-
+        
     }
 
 }

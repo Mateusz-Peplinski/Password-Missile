@@ -42,6 +42,9 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.statusBox = new System.Windows.Forms.PictureBox();
             this.loadingGIF = new System.Windows.Forms.PictureBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.passwordGenerationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uniquePasswordGenerationToolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.algorithComboBox = new PasswordCracker.customDropDown();
             ((System.ComponentModel.ISupportInitialize)(this._launch)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._abort)).BeginInit();
@@ -50,6 +53,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.statusBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.loadingGIF)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // locateFile
@@ -59,7 +63,7 @@
             this.locateFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.locateFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.locateFile.ForeColor = System.Drawing.Color.Chartreuse;
-            this.locateFile.Location = new System.Drawing.Point(266, 57);
+            this.locateFile.Location = new System.Drawing.Point(273, 74);
             this.locateFile.Margin = new System.Windows.Forms.Padding(2);
             this.locateFile.Name = "locateFile";
             this.locateFile.Size = new System.Drawing.Size(102, 26);
@@ -80,7 +84,7 @@
             this.hashTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.hashTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.hashTextBox.ForeColor = System.Drawing.Color.Chartreuse;
-            this.hashTextBox.Location = new System.Drawing.Point(266, 16);
+            this.hashTextBox.Location = new System.Drawing.Point(273, 33);
             this.hashTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.hashTextBox.Name = "hashTextBox";
             this.hashTextBox.Size = new System.Drawing.Size(379, 26);
@@ -107,7 +111,7 @@
             this.selectedFileTextBox.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.selectedFileTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.selectedFileTextBox.ForeColor = System.Drawing.Color.Chartreuse;
-            this.selectedFileTextBox.Location = new System.Drawing.Point(372, 55);
+            this.selectedFileTextBox.Location = new System.Drawing.Point(379, 72);
             this.selectedFileTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.selectedFileTextBox.Name = "selectedFileTextBox";
             this.selectedFileTextBox.ReadOnly = true;
@@ -216,6 +220,39 @@
             this.loadingGIF.TabIndex = 21;
             this.loadingGIF.TabStop = false;
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.BackColor = System.Drawing.Color.Black;
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.passwordGenerationToolStripMenuItem});
+            this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(662, 24);
+            this.menuStrip1.TabIndex = 22;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // passwordGenerationToolStripMenuItem
+            // 
+            this.passwordGenerationToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.passwordGenerationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.uniquePasswordGenerationToolToolStripMenuItem});
+            this.passwordGenerationToolStripMenuItem.ForeColor = System.Drawing.Color.LawnGreen;
+            this.passwordGenerationToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.DimGray;
+            this.passwordGenerationToolStripMenuItem.Name = "passwordGenerationToolStripMenuItem";
+            this.passwordGenerationToolStripMenuItem.Size = new System.Drawing.Size(130, 20);
+            this.passwordGenerationToolStripMenuItem.Text = "Password Generation";
+            // 
+            // uniquePasswordGenerationToolToolStripMenuItem
+            // 
+            this.uniquePasswordGenerationToolToolStripMenuItem.BackColor = System.Drawing.Color.Black;
+            this.uniquePasswordGenerationToolToolStripMenuItem.ForeColor = System.Drawing.Color.LawnGreen;
+            this.uniquePasswordGenerationToolToolStripMenuItem.Name = "uniquePasswordGenerationToolToolStripMenuItem";
+            this.uniquePasswordGenerationToolToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.uniquePasswordGenerationToolToolStripMenuItem.Text = "Unique Password Generation Tool";
+            this.uniquePasswordGenerationToolToolStripMenuItem.ToolTipText = "A tool to generate a custom wordlist based on user data";
+            this.uniquePasswordGenerationToolToolStripMenuItem.Click += new System.EventHandler(this.uniquePasswordGenerationToolToolStripMenuItem_Click);
+            // 
             // algorithComboBox
             // 
             this.algorithComboBox.BackColor = System.Drawing.Color.Black;
@@ -229,7 +266,7 @@
             "SHA1",
             "SHA256",
             "NTLM"});
-            this.algorithComboBox.Location = new System.Drawing.Point(266, 95);
+            this.algorithComboBox.Location = new System.Drawing.Point(273, 112);
             this.algorithComboBox.Name = "algorithComboBox";
             this.algorithComboBox.Size = new System.Drawing.Size(121, 21);
             this.algorithComboBox.TabIndex = 20;
@@ -240,7 +277,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::PasswordCracker.Properties.Resources.main;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(662, 449);
+            this.ClientSize = new System.Drawing.Size(662, 435);
+            this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.loadingGIF);
             this.Controls.Add(this.algorithComboBox);
             this.Controls.Add(this.statusBox);
@@ -256,6 +294,7 @@
             this.Controls.Add(this._abortOnLoad);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "main";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
@@ -268,6 +307,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.statusBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.loadingGIF)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -289,6 +330,9 @@
         private System.Windows.Forms.PictureBox statusBox;
         private customDropDown algorithComboBox;
         private System.Windows.Forms.PictureBox loadingGIF;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem passwordGenerationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem uniquePasswordGenerationToolToolStripMenuItem;
     }
 }
 

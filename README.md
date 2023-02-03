@@ -15,8 +15,15 @@
 
 ## Bugs To fix:
 </br>
+
 | :warning: Main thread Locks Up after finishing  |
 |-----------------------------------------|
 
-| :warning:        Ignore at your own risk!   |
+| :warning: Loading loop not showing somtimes   |
+|-----------------------------------------|
+
+| :warning: Cannot run program twice as main hash thread locks when it completes!   |
+|-----------------------------------------|
+
+| :warning: Pass Gen Tool Not completed  |
 |-----------------------------------------|

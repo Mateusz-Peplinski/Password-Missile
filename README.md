@@ -15,7 +15,8 @@
 
 Bugs To fix:
 </br>
-| :warning:  This is very important   |
+| :warning: Main thread Locks Up after finishing  |
 |-----------------------------------------|
+
 | :warning:        Ignore at your own risk!   |
 |-----------------------------------------|

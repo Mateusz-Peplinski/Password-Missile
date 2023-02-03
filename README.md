@@ -13,3 +13,9 @@
 </p>
 </br>
 
+Bugs To fix:
+</br>
+| :warning:  This is very important   |
+|-----------------------------------------|
+| :warning:        Ignore at your own risk!   |
+|-----------------------------------------|

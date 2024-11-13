@@ -1,5 +1,50 @@
-﻿################################################################################
+################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs/Password-Missile/FileContentIndex/e6f07ce1-398a-4845-b213-57ad9b8be0ba.vsidx
+# Ignore Visual Studio temporary files, build results, and
+# build logs.
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# User-specific folders
+.vs/
+
+# Build results
+bin/
+obj/
+obj/Debug
+*.log
+
+# Debug and Release configuration files
+*.log
+
+# Crash reports
+*.pidb
+*.opendb
+
+# Visual Studio Code settings
+.vscode/
+
+# Ignore NuGet Packages
+packages/
+*.nupkg
+*.snupkg
+
+# Ignore MaterialDesignThemes auto-generated files
+MaterialDesignThemes.targets
+
+# Other files
+*.cache
+*.pdb
+*.exe
+*.dll
+*.class
+*.pyc
+*.i.cs
+
